@@ -37,17 +37,30 @@ for n in range(Tend-T0):
     for ii in range(len(param[0])):
         c = 0
         for i in range(n):
-            for j in range(dT[ii]):
+            for j in range(1,dT[ii]+1):
                 dt = dT[ii]
-                c += k[ii]*L0[ii]*(W[i][ii]/dt)*math.exp(-k[ii]*(n-i+j/dt))
+                c += k[ii]*L0[ii]*(W[i][ii]/dt)*math.exp(-k[ii]*(n-i-j/dt))
         ch4.append(c)
     CH4.append(ch4)
 
-with open('results.csv','w') as f:
+with open('resultsCH4.csv','w') as f:
+    strin = 'year;'
+    for j in range(len(CH4[0])):
+        strin += 'landfill'+str(j+1)+';'
+    f.write(strin+'\n')
     for i in range(Tend-T0):
         strin = str(T[i])+';'
-        print(i)
         for j in range(len(CH4[0])):
-            strin += str(CH4[i][j]).replace('.',',') + ';'
+            strin += str(CH4[i][j]*0.000667148).replace('.',',') + ';'#
         f.write(strin+'\n')
-    
+
+with open('resultsCO2.csv','w') as f:
+    strin = 'year;'
+    for j in range(len(CH4[0])):
+        strin += 'landfill'+str(j+1)+';'
+    f.write(strin+'\n')
+    for i in range(Tend-T0):
+        strin = str(T[i])+';'
+        for j in range(len(CH4[0])):
+            strin += str(CH4[i][j]*0.001830499).replace('.',',') + ';'
+        f.write(strin+'\n')
